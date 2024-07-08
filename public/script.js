@@ -47,11 +47,36 @@ function fetchEntries(searchTerm = '') {
     .then(data => {
         const entriesDiv = document.getElementById('entries');
         entriesDiv.innerHTML = '';
-        data.entries.forEach(entry => {
-            const entryDiv = document.createElement('div');
-            entryDiv.innerText = `${entry.time} - ${entry.action}`;
-            entriesDiv.appendChild(entryDiv);
-        });
+        if (data.entries.length > 0) {
+            const table = document.createElement('table');
+            table.className = 'table table-striped';
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+            const headerRow = document.createElement('tr');
+            const headers = ['Time', 'Action'];
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.scope = 'col';
+                th.innerText = headerText;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            data.entries.forEach(entry => {
+                const row = document.createElement('tr');
+                const timeCell = document.createElement('td');
+                timeCell.innerText = entry.time;
+                const actionCell = document.createElement('td');
+                actionCell.innerText = entry.action;
+                row.appendChild(timeCell);
+                row.appendChild(actionCell);
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            entriesDiv.appendChild(table);
+        } else {
+            entriesDiv.innerText = 'No entries found';
+        }
     })
     .catch(error => console.error('Error:', error));
 }
