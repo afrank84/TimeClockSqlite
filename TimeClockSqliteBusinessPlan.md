@@ -4,11 +4,13 @@ Creating a SaaS business in one week is a highly ambitious goal, but with a stru
 ### Day 1: Idea Validation and Planning
 1. **Identify the Problem and Solution**:
    - Clearly define the problem your SaaS will solve.
+	   -  Will allow for offline, private, clock-in that can be deployed on a computer. 
    - Validate the demand for your solution through quick market research (surveys, forums, social media).
      - Can you sell this to 10 people?
 
 2. **Define Your Target Audience**:
    - Identify who will benefit from your SaaS.
+	   - Small Businesses that don't want an entire setup and want to use their own infrastructure.
    - Create a user persona that includes demographics, pain points, and needs.
 
 3. **Competitive Analysis**:
