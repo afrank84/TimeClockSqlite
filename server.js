@@ -43,6 +43,24 @@ app.post('/clockout', (req, res) => {
     });
 });
 
+app.get('/entries', (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 20;
+    const searchTerm = req.query.search || '';
+    const offset = (page - 1) * pageSize;
+
+    let query = "SELECT * FROM timeclock WHERE time LIKE ? OR action LIKE ? ORDER BY id DESC LIMIT ? OFFSET ?";
+    let params = [`%${searchTerm}%`, `%${searchTerm}%`, pageSize, offset];
+
+    db.all(query, params, (err, rows) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+            return;
+        }
+        res.json({ entries: rows });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });
