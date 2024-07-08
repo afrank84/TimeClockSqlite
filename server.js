@@ -1,23 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
-const path = require('path'); // Import path module
+const path = require('path');
 const app = express();
 const port = 3000;
 
-let db = new sqlite3.Database(':memory:', (err) => {
+// Define the path to the database file
+const dbPath = path.join(__dirname, 'timeclock.db');
+
+// Connect to a file-based SQLite database
+let db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         return console.error(err.message);
     }
-    console.log('Connected to the in-memory SQlite database.');
+    console.log('Connected to the SQLite database at', dbPath);
 });
 
 db.serialize(() => {
-    db.run("CREATE TABLE timeclock (id INTEGER PRIMARY KEY, time TEXT, action TEXT)");
+    db.run("CREATE TABLE IF NOT EXISTS timeclock (id INTEGER PRIMARY KEY, time TEXT, action TEXT)");
 });
 
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/clockin', (req, res) => {
     const time = req.body.time;
